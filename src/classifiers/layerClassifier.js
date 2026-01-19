@@ -3,6 +3,8 @@
  * Classifies PSD layers into Elementor widget types
  */
 
+const COMPOSITE_WIDGETS = ['image-box', 'icon-box', 'icon-list'];
+
 // Widget type patterns based on layer naming conventions
 const PATTERNS = {
     heading: /^(heading|title|h1|h2|h3|h4|h5|h6|headline|header)[-_]?/i,
@@ -46,10 +48,28 @@ function classifyLayer(layer) {
 
     // Classify based on layer type and name
     classified.widgetType = determineWidgetType(layer);
+
+    console.table([
+        {
+            label: 'Layer',
+            value: layer
+        },
+        {
+            label: 'Classified',
+            value: classified
+        },
+        {
+            label: 'Widget Type',
+            value: classified?.widgetType
+        }
+    ]);
+
+
     classified.badgeClass = BADGE_CLASSES[classified.widgetType] || 'container';
 
     // Recursively classify children
-    if (layer.children && layer.children.length > 0) {
+    if (layer.children && layer.children.length > 0 && !COMPOSITE_WIDGETS.includes(classified.widgetType)) {
+        console.log("Moving to the children", classified.widgetType);
         classified.children = layer.children.map(child => classifyLayer(child));
 
         // Check if this group should be a composite widget
@@ -140,6 +160,8 @@ function isButtonShape(layer, name) {
  */
 function detectCompositeWidget(children) {
     if (!children || children.length === 0) return null;
+
+    console.log("Composite Widget [detectCompositeWidget]:", children);
 
     const types = children.map(c => c.widgetType);
     const hasImage = types.includes('image');

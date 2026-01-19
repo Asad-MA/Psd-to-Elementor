@@ -29,6 +29,8 @@ export async function parsePsdFile(file, onProgress = () => { }) {
 
     onProgress(90, 'Processing complete');
 
+    console.log("PSD Data: ", psd);
+
     return {
         width: psd.width,
         height: psd.height,
@@ -96,12 +98,16 @@ function extractLayerInfo(layer, depth) {
     // Extract text info if it's a text layer
     if (isText && layer.text) {
         layerInfo.textInfo = extractTextInfo(layer.text);
+
+        // console.log("Layer Info: ", layerInfo);
     }
 
     // Check for image content
     if (!isGroup && !isText) {
         layerInfo.hasImage = true;
     }
+
+
 
     return layerInfo;
 }
@@ -129,14 +135,24 @@ function getLayerType(layer) {
  * Extract text information from text layer
  */
 function extractTextInfo(textData) {
+    //console.log("Text Data: ", textData);
     try {
         const style = textData.style || {};
         const paragraphStyle = textData.paragraphStyle || {};
+        const transform = textData.transform || {};
+
+        const fontSize = textData.style.fontSize;
+        const scaleX = transform?.[0] ?? 1;
+        const scaleY = transform?.[3] ?? 1;
+        const scale = (scaleX + scaleY) / 2;
+
+        const finalFontSize = Math.round(fontSize * scale);
+
 
         return {
             text: textData.text || '',
             // Convert PT to PX (1pt = 1.333px at 96dpi)
-            fontSize: style.fontSize ? Math.round(style.fontSize * 1.33333) : 16,
+            fontSize: finalFontSize,
             fontFamily: getFontFamily(style.font?.name),
             color: extractColor(style.fillColor) || '#000000',
             alignment: getAlignment(paragraphStyle.justification),
@@ -160,6 +176,8 @@ function extractTextInfo(textData) {
         };
     }
 }
+
+
 
 /**
  * Extract color from fill color object

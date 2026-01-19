@@ -86,15 +86,18 @@ function generateElement(layer) {
 
     // Handle composite widgets (image-box, icon-box, icon-list)
     if (layer.isComposite) {
+        console.log("Generating Composite Widget [generateElement]:", layer);
         return generateCompositeWidget(layer);
     }
 
     // Handle containers with children
-    if (widgetType === 'container' || (layer.children && layer.children.length > 0)) {
+    if (widgetType === 'container' && (layer.children && layer.children.length > 0)) {
+        console.log("Generating Container [generateElement]:", layer);
         return generateContainer(layer);
     }
 
     // Generate widget (should not reach here for root level due to wrapInContainers)
+    console.log("Generating Widget [generateElement]:", layer);
     return generateWidget(layer);
 }
 

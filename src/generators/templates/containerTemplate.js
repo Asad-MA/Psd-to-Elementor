@@ -38,26 +38,26 @@ export function createContainer(layer) {
             flex_align_content: "flex-start",
             padding: {
                 unit: "px",
-                top: "0", // Default to 0 and let gap handle spacing
-                right: "0",
-                bottom: "0",
-                left: "0",
+                top: "100", // Default to 0 and let gap handle spacing
+                right: "20",
+                bottom: "100",
+                left: "20",
                 isLinked: true
             },
             padding_tablet: {
                 unit: "px",
-                top: "0",
-                right: "0",
-                bottom: "0",
-                left: "0",
+                top: "70",
+                right: "20",
+                bottom: "70",
+                left: "20",
                 isLinked: true
             },
             padding_mobile: {
                 unit: "px",
-                top: "0",
-                right: "0",
-                bottom: "0",
-                left: "0",
+                top: "40",
+                right: "20",
+                bottom: "40",
+                left: "20",
                 isLinked: true
             }
         },

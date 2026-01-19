@@ -16,7 +16,7 @@ export function createImageWidget(layer) {
         id: generateId(),
         settings: {
             image: {
-                url: "",
+                url: "https://placehold.co/600x400",
                 id: "",
                 size: "",
                 alt: layer.name || "Image",
