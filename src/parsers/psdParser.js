@@ -4,6 +4,7 @@
  */
 
 import { readPsd } from 'ag-psd';
+import TextStyleExtractor from '../helpers/TextStyleExtractor';
 
 /**
  * Parse a PSD file and extract layer structure
@@ -97,7 +98,7 @@ function extractLayerInfo(layer, depth) {
 
     // Extract text info if it's a text layer
     if (isText && layer.text) {
-        layerInfo.textInfo = extractTextInfo(layer.text);
+        layerInfo.textInfo = TextStyleExtractor.extract(layer.text);
 
         // console.log("Layer Info: ", layerInfo);
     }
@@ -134,150 +135,9 @@ function getLayerType(layer) {
 /**
  * Extract text information from text layer
  */
-function extractTextInfo(textData) {
-    //console.log("Text Data: ", textData);
-    try {
-        const style = textData.style || {};
-        const paragraphStyle = textData.paragraphStyle || {};
-        const transform = textData.transform || {};
-
-        const fontSize = textData.style.fontSize;
-        const scaleX = transform?.[0] ?? 1;
-        const scaleY = transform?.[3] ?? 1;
-        const scale = (scaleX + scaleY) / 2;
-
-        const finalFontSize = Math.round(fontSize * scale);
-
-
-        return {
-            text: textData.text || '',
-            // Convert PT to PX (1pt = 1.333px at 96dpi)
-            fontSize: finalFontSize,
-            fontFamily: getFontFamily(style.font?.name),
-            color: extractColor(style.fillColor) || '#000000',
-            alignment: getAlignment(paragraphStyle.justification),
-            fontWeight: style.fauxBold || (style.font?.name && style.font.name.toLowerCase().includes('bold')) ? 'bold' : 'normal',
-            lineHeight: style.leading ? `${Math.round(style.leading)}px` : 'normal',
-            textTransform: getTextTransform(style.fontCaps),
-            letterSpacing: style.tracking ? `${style.tracking / 1000}em` : 'normal'
-        };
-    } catch (e) {
-        console.warn('Error extracting text info:', e);
-        return {
-            text: textData.text || '',
-            fontSize: 16,
-            fontFamily: 'Arial',
-            color: '#000000',
-            alignment: 'left',
-            fontWeight: 'normal',
-            lineHeight: 'normal',
-            textTransform: 'none',
-            letterSpacing: 'normal'
-        };
-    }
-}
 
 
 
-/**
- * Extract color from fill color object
- */
-function extractColor(fillColor) {
-    if (!fillColor) return '#000000';
-
-    // Handle RGB color
-    if (fillColor.r !== undefined) {
-        const r = Math.round(fillColor.r);
-        const g = Math.round(fillColor.g);
-        const b = Math.round(fillColor.b);
-        return rgbToHex(r, g, b);
-    }
-
-    return '#000000';
-}
-
-/**
- * Get alignment string from justification value
- */
-function getAlignment(justification) {
-    const alignments = {
-        'left': 'left',
-        'right': 'right',
-        'center': 'center',
-        'justifyAll': 'justify',
-        'justifyLeft': 'left',
-        'justifyCenter': 'center',
-        'justifyRight': 'right'
-    };
-    return alignments[justification] || 'left';
-}
-
-/**
- * Convert RGB to hex color
- */
-function rgbToHex(r, g, b) {
-    return '#' + [r, g, b].map(x => {
-        const hex = Math.max(0, Math.min(255, x)).toString(16);
-        return hex.length === 1 ? '0' + hex : hex;
-    }).join('');
-}
-
-/**
- * Get intelligent font family name from PSD font name
- * Maps PostScript names to Web Font Families
- */
-function getFontFamily(psdFontName) {
-    if (!psdFontName) return 'Arial';
-
-    // Common mappings
-    const fontMappings = {
-        'ArialMT': 'Arial',
-        'Arial-BoldMT': 'Arial',
-        'Helvetica': 'Helvetica',
-        'HelveticaNeue': 'Helvetica Neue',
-        'TimesNewRomanPSMT': 'Times New Roman',
-        'TimesNewRomanPS-BoldMT': 'Times New Roman',
-        'Verdana': 'Verdana',
-        'Georgia': 'Georgia',
-        'CourierNewPSMT': 'Courier New',
-        'Roboto-Regular': 'Roboto',
-        'Roboto-Bold': 'Roboto',
-        'OpenSans-Regular': 'Open Sans',
-        'OpenSans-Bold': 'Open Sans',
-        'Lato-Regular': 'Lato',
-        'Montserrat-Regular': 'Montserrat',
-        'Poppins-Regular': 'Poppins'
-    };
-
-    if (fontMappings[psdFontName]) {
-        return fontMappings[psdFontName];
-    }
-
-    // Intelligent guessing: Remove common suffixes
-    return psdFontName
-        .replace(/-?Bold.*/i, '')
-        .replace(/-?Italic.*/i, '')
-        .replace(/-?Regular.*/i, '')
-        .replace(/-?Light.*/i, '')
-        .replace(/-?Medium.*/i, '')
-        .replace(/-?Black.*/i, '')
-        .replace(/MT$/, '')
-        .replace(/PS$/, '')
-        .replace(/PSMT$/, '')
-        .replace(/([a-z])([A-Z])/g, '$1 $2') // Insert space between camelCase
-        .trim();
-}
-
-/**
- * Get CSS text-transform from fontCaps
- */
-function getTextTransform(fontCaps) {
-    switch (fontCaps) {
-        case 1: return 'uppercase'; // All Caps
-        case 2: return 'uppercase'; // Small Caps (approximation)
-        default: return 'none';
-    }
-}
 
 /**
  * Generate unique ID for layers
