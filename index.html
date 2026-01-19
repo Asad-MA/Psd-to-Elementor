@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Convert PSD files to Elementor JSON templates instantly">
+  <title>PSD to Elementor Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/index.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header__logo">
+        <svg class="header__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <path d="M12 18v-6"/>
+          <path d="M9 15l3 3 3-3"/>
+        </svg>
+        <h1>PSD <span class="gradient-text">to</span> Elementor</h1>
+      </div>
+      <p class="header__tagline">Transform your designs into Elementor templates</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Upload Section -->
+      <section class="upload-section" id="uploadSection">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone__content">
+            <div class="dropzone__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <h2 class="dropzone__title">Drop your PSD file here</h2>
+            <p class="dropzone__subtitle">or click to browse</p>
+            <input type="file" id="fileInput" accept=".psd" hidden>
+          </div>
+          <div class="dropzone__progress" id="uploadProgress" hidden>
+            <div class="progress-ring">
+              <svg viewBox="0 0 100 100">
+                <circle class="progress-ring__bg" cx="50" cy="50" r="45"/>
+                <circle class="progress-ring__fill" cx="50" cy="50" r="45" id="progressCircle"/>
+              </svg>
+              <span class="progress-ring__text" id="progressText">0%</span>
+            </div>
+            <p class="dropzone__status" id="uploadStatus">Parsing PSD...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Section -->
+      <section class="preview-section" id="previewSection" hidden>
+        <div class="preview-header">
+          <h2 class="preview-header__title">Layer Structure</h2>
+          <div class="preview-header__actions">
+            <button class="btn btn--secondary" id="resetBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              Reset
+            </button>
+            <button class="btn btn--primary" id="downloadBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download JSON
+            </button>
+          </div>
+        </div>
+        
+        <div class="preview-container">
+          <!-- Layer Tree -->
+          <div class="layer-panel">
+            <div class="layer-panel__header">
+              <span>Layers</span>
+              <span class="layer-panel__hint">Drag to reorder</span>
+            </div>
+            <div class="layer-tree" id="layerTree"></div>
+          </div>
+          
+          <!-- JSON Preview -->
+          <div class="json-panel">
+            <div class="json-panel__header">
+              <span>JSON Output</span>
+              <button class="btn btn--icon" id="copyBtn" title="Copy to clipboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+            </div>
+            <pre class="json-preview" id="jsonPreview"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" hidden>
+      <span class="toast__message" id="toastMessage"></span>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

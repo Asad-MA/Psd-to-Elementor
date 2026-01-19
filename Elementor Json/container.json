@@ -1,0 +1,53 @@
+{
+  "id": "7b27518c",
+  "settings": {
+    "flex_direction": "row",
+    "boxed_width": {
+      "unit": "px",
+      "size": 1170,
+      "sizes": []
+    },
+    "flex_direction_mobile": "column",
+    "flex_justify_content": "space-between",
+    "flex_align_items": "flex-start",
+    "flex_align_items_mobile": "center",
+    "flex_gap": {
+      "column": "30",
+      "row": "30",
+      "isLinked": true,
+      "unit": "px",
+      "size": 30
+    },
+    "flex_wrap": "wrap",
+    "flex_align_content": "flex-start",
+    "padding": {
+      "unit": "px",
+      "top": "100",
+      "right": "20",
+      "bottom": "100",
+      "left": "20",
+      "isLinked": false
+    },
+    "padding_tablet": {
+      "unit": "px",
+      "top": "70",
+      "right": "20",
+      "bottom": "70",
+      "left": "20",
+      "isLinked": false
+    },
+    "padding_mobile": {
+      "unit": "px",
+      "top": "40",
+      "right": "20",
+      "bottom": "40",
+      "left": "20",
+      "isLinked": false
+    },
+    "_element_id": "id1",
+    "css_classes": "c1"
+  },
+  "elements": [],
+  "isInner": false,
+  "elType": "container"
+}

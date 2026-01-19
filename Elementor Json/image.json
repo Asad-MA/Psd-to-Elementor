@@ -1,0 +1,51 @@
+{
+  "id": "397f07cc",
+  "settings": {
+    "image": {
+      "url": "http://localhost/elementor-mapping/wp-content/uploads/2026/01/Gemini_Generated_Image_7wrlco7wrlco7wrl.png",
+      "id": 34,
+      "size": "",
+      "alt": "",
+      "source": "library"
+    },
+    "align": "center",
+    "width": {
+      "unit": "px",
+      "size": 300,
+      "sizes": []
+    },
+    "width_tablet": {
+      "unit": "px",
+      "size": "",
+      "sizes": []
+    },
+    "width_mobile": {
+      "unit": "px",
+      "size": "",
+      "sizes": []
+    },
+    "space": {
+      "unit": "%",
+      "size": 100,
+      "sizes": []
+    },
+    "height": {
+      "unit": "px",
+      "size": 300,
+      "sizes": []
+    },
+    "object-fit": "cover",
+    "image_border_radius": {
+      "unit": "px",
+      "top": "10",
+      "right": "10",
+      "bottom": "10",
+      "left": "10",
+      "isLinked": true
+    }
+  },
+  "elements": [],
+  "isInner": false,
+  "widgetType": "image",
+  "elType": "widget"
+}
