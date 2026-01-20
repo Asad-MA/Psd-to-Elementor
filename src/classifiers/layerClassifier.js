@@ -49,27 +49,27 @@ function classifyLayer(layer) {
     // Classify based on layer type and name
     classified.widgetType = determineWidgetType(layer);
 
-    console.table([
-        {
-            label: 'Layer',
-            value: layer
-        },
-        {
-            label: 'Classified',
-            value: classified
-        },
-        {
-            label: 'Widget Type',
-            value: classified?.widgetType
-        }
-    ]);
+    //    console.table([
+    //         {
+    //             label: 'Layer',
+    //             value: layer
+    //         },
+    //         {
+    //             label: 'Classified',
+    //             value: classified
+    //         },
+    //         {
+    //             label: 'Widget Type',
+    //             value: classified?.widgetType
+    //         }
+    //     ]);
 
 
     classified.badgeClass = BADGE_CLASSES[classified.widgetType] || 'container';
 
     // Recursively classify children
     if (layer.children && layer.children.length > 0 && !COMPOSITE_WIDGETS.includes(classified.widgetType)) {
-        console.log("Moving to the children", classified.widgetType);
+        // console.log("Moving to the children", classified.widgetType);
         classified.children = layer.children.map(child => classifyLayer(child));
 
         // Check if this group should be a composite widget
@@ -161,7 +161,7 @@ function isButtonShape(layer, name) {
 function detectCompositeWidget(children) {
     if (!children || children.length === 0) return null;
 
-    console.log("Composite Widget [detectCompositeWidget]:", children);
+    // console.log("Composite Widget [detectCompositeWidget]:", children);
 
     const types = children.map(c => c.widgetType);
     const hasImage = types.includes('image');

@@ -24,7 +24,7 @@ export function createImageBoxWidget(layer) {
     const data = layer.compositeData || {};
     const textInfo = layer.textInfo || {};
 
-    console.log("Generating Image Box Widget [createImageBoxWidget]:", layer);
+    //  console.log("Generating Image Box Widget [createImageBoxWidget]:", layer);
 
     const imageBoxElements = imageBoxClassifier.classify(layer.children);
 
@@ -49,7 +49,7 @@ export function createImageBoxWidget(layer) {
 
 
 
-    console.log("Image Box Children Classification:", imageBoxElements, position);
+    // console.log("Image Box Children Classification:", imageBoxElements, position);
 
     return {
         id: generateId(),

@@ -5,7 +5,7 @@ export default class TextStyleExtractor {
      * @returns {Object} normalized text style object
      */
     static extract(textData = {}) {
-        console.log("TextStyleExtractor: ", textData);
+        // console.log("TextStyleExtractor: ", textData);
         try {
             const style = textData.style || {};
             const paragraphStyle = textData.paragraphStyle || {};
