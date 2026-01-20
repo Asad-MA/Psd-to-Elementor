@@ -14,7 +14,8 @@ let appState = {
     psdData: null,
     classifiedLayers: null,
     elementorJson: null,
-    fileName: ''
+    fileName: '',
+    useSmartDetection: false
 };
 
 // DOM Elements
@@ -42,6 +43,15 @@ function init() {
     downloadBtn.addEventListener('click', handleDownload);
     resetBtn.addEventListener('click', handleReset);
     copyBtn.addEventListener('click', handleCopy);
+
+    // Smart Detection toggle
+    const smartToggle = document.getElementById('smartDetectionToggle');
+    if (smartToggle) {
+        smartToggle.addEventListener('change', (e) => {
+            appState.useSmartDetection = e.target.checked;
+            console.log('Smart Detection Mode:', appState.useSmartDetection ? 'ON' : 'OFF');
+        });
+    }
 }
 
 /**
@@ -77,8 +87,11 @@ async function handleFileSelected(file) {
         appState.psdData = psdData;
 
         // Classify layers
-        showProgress(dropzone, 95, 'Classifying layers...');
-        appState.classifiedLayers = classifyLayers(psdData.layers);
+        showProgress(dropzone, 95, appState.useSmartDetection ? 'Smart detecting structure...' : 'Classifying layers...');
+        appState.classifiedLayers = classifyLayers(psdData.layers, {
+            useSmartDetection: appState.useSmartDetection,
+            canvasWidth: psdData.width
+        });
 
         // Generate initial JSON
         updateElementorJson();

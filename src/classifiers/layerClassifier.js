@@ -3,6 +3,8 @@
  * Classifies PSD layers into Elementor widget types
  */
 
+import { RawPSDAdapter } from '../adapters/RawPSDAdapter.js';
+
 const COMPOSITE_WIDGETS = ['image-box', 'icon-box', 'icon-list'];
 
 // Widget type patterns based on layer naming conventions
@@ -32,9 +34,19 @@ const BADGE_CLASSES = {
 /**
  * Classify a layer tree into Elementor widget types
  * @param {Array} layers - Array of layer objects from PSD parser
+ * @param {Object} options - Classification options
+ * @param {boolean} options.useSmartDetection - Use spatial clustering for ungrouped layers
+ * @param {number} options.canvasWidth - PSD canvas width (required for smart detection)
  * @returns {Array} Classified layers with widget types
  */
-export function classifyLayers(layers) {
+export function classifyLayers(layers, options = {}) {
+    // Use RawPSD Adapter for smart detection mode
+    if (options.useSmartDetection) {
+        console.log('Smart Detection Mode: Using RawPSD Adapter');
+        return RawPSDAdapter.processLayers(layers, options.canvasWidth);
+    }
+
+    // Default: name-based classification
     return layers.map(layer => classifyLayer(layer));
 }
 

@@ -26,25 +26,34 @@ export function createImageBoxWidget(layer) {
 
     //  console.log("Generating Image Box Widget [createImageBoxWidget]:", layer);
 
-    const imageBoxElements = imageBoxClassifier.classify(layer.children);
+    const imageBoxElements = imageBoxClassifier.classify(layer.children || []);
 
+    // Null safety: provide default bounds if elements are missing
+    const defaultBounds = { top: 0, left: 0, right: 100, bottom: 100, width: 100, height: 100 };
+    const defaultTextInfo = { text: '', fontSize: 16, fontFamily: 'Inter', fontWeight: 'normal', lineHeight: 1.5, alignment: 'left' };
 
+    const imageBounds = imageBoxElements.image?.bounds || defaultBounds;
+    const headingBounds = imageBoxElements.heading?.bounds || defaultBounds;
+    const descriptionBounds = imageBoxElements.description?.bounds || defaultBounds;
+
+    const headingTextInfo = imageBoxElements.heading?.textInfo || defaultTextInfo;
+    const descriptionTextInfo = imageBoxElements.description?.textInfo || defaultTextInfo;
 
     const position = LayoutRelationshipHelper.getRelativePosition(
-        imageBoxElements.image.bounds,
-        imageBoxElements.heading.bounds
+        imageBounds,
+        headingBounds
     );
 
     const imageHeadingDistance =
         LayoutDistanceHelper.smartDistance(
-            imageBoxElements.image.bounds,
-            imageBoxElements.heading.bounds
+            imageBounds,
+            headingBounds
         );
 
     const headingDescriptionDistance =
         LayoutDistanceHelper.verticalDistance(
-            imageBoxElements.heading.bounds,
-            imageBoxElements.description.bounds
+            headingBounds,
+            descriptionBounds
         );
 
 
@@ -61,9 +70,9 @@ export function createImageBoxWidget(layer) {
                 alt: "",
                 source: "library"
             },
-            title_text: imageBoxElements.heading.textInfo.text || textInfo.text || layer.name || "Title",
-            description_text: imageBoxElements.description.textInfo.text || "Description text goes here.",
-            text_align: imageBoxElements.heading.textInfo.alignment,
+            title_text: headingTextInfo.text || data.title || textInfo.text || layer.name || "Title",
+            description_text: descriptionTextInfo.text || data.description || "Description text goes here.",
+            text_align: headingTextInfo.alignment || "left",
             position: position,
             position_mobile: "top",
             text_align_mobile: "center",
@@ -83,29 +92,29 @@ export function createImageBoxWidget(layer) {
                 sizes: []
             },
             title_typography_typography: "custom",
-            title_typography_font_family: imageBoxElements.heading.textInfo.fontFamily,
+            title_typography_font_family: headingTextInfo.fontFamily || "Inter",
             title_typography_font_size: {
                 unit: "px",
-                size: imageBoxElements.heading.textInfo.fontSize,
+                size: headingTextInfo.fontSize || 24,
                 sizes: []
             },
-            title_typography_font_weight: imageBoxElements.heading.textInfo.fontWeight,
+            title_typography_font_weight: headingTextInfo.fontWeight || "bold",
             title_typography_line_height: {
                 unit: "em",
-                size: imageBoxElements.heading.textInfo.lineHeight,
+                size: headingTextInfo.lineHeight || 1.5,
                 sizes: []
             },
             description_typography_typography: "custom",
-            description_typography_font_family: imageBoxElements.description.textInfo.fontFamily,
+            description_typography_font_family: descriptionTextInfo.fontFamily || "Inter",
             description_typography_font_size: {
                 unit: "px",
-                size: imageBoxElements.description.textInfo.fontSize,
+                size: descriptionTextInfo.fontSize || 16,
                 sizes: []
             },
-            description_typography_font_weight: imageBoxElements.description.textInfo.fontWeight,
+            description_typography_font_weight: descriptionTextInfo.fontWeight || "normal",
             description_typography_line_height: {
                 unit: "em",
-                size: imageBoxElements.description.textInfo.lineHeight,
+                size: descriptionTextInfo.lineHeight || 1.6,
                 sizes: []
             },
             _padding: {
@@ -140,3 +149,4 @@ export function createImageBoxWidget(layer) {
         elType: "widget"
     };
 }
+
