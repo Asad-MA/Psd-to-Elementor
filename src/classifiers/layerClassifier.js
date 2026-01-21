@@ -192,7 +192,7 @@ function detectCompositeWidget(children) {
     }
 
     // Image + Heading + optional Text = Image Box
-    if (hasImage && hasHeading) {
+    if (hasImage && (hasHeading || hasText)) {
         return 'image-box';
     }
 

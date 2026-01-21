@@ -14,9 +14,9 @@ export class RawPSDAdapter {
      * Configuration for the adapter
      */
     static CONFIG = {
-        PROXIMITY_THRESHOLD: 50,    // px - distance to consider layers as grouped
-        MIN_CLUSTER_GAP: 80,        // px - min gap to create separate containers
-        ROW_OVERLAP_RATIO: 0.3      // ratio of vertical overlap to consider same row
+        PROXIMITY_THRESHOLD: 1,    // px - distance to consider layers as grouped
+        MIN_CLUSTER_GAP: 20,        // px - min gap to create separate containers
+        ROW_OVERLAP_RATIO: 0.1      // ratio of vertical overlap to consider same row
     };
 
     /**
