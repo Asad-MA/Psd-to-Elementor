@@ -18,7 +18,7 @@ export class StructureInferenceEngine {
         BUTTON_ASPECT_MIN: 2,
         BUTTON_ASPECT_MAX: 6,
         ICON_MAX_SIZE: 100,
-        PROXIMITY_THRESHOLD: 50
+        PROXIMITY_THRESHOLD: 20,
     };
 
     /**

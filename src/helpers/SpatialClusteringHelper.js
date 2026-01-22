@@ -8,7 +8,7 @@ export class SpatialClusteringHelper {
     /**
      * Default threshold for considering layers as "nearby" (in pixels)
      */
-    static DEFAULT_THRESHOLD = 50;
+    static DEFAULT_THRESHOLD = 20;
 
     /**
      * Cluster layers by spatial proximity

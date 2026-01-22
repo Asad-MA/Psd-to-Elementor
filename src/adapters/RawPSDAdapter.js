@@ -14,8 +14,8 @@ export class RawPSDAdapter {
      * Configuration for the adapter
      */
     static CONFIG = {
-        PROXIMITY_THRESHOLD: 1,    // px - distance to consider layers as grouped
-        MIN_CLUSTER_GAP: 20,        // px - min gap to create separate containers
+        PROXIMITY_THRESHOLD: 20,    // px - distance to consider layers as grouped
+        MIN_CLUSTER_GAP: 100,        // px - min gap to create separate containers
         ROW_OVERLAP_RATIO: 0.1      // ratio of vertical overlap to consider same row
     };
 
@@ -139,6 +139,7 @@ export class RawPSDAdapter {
     static processCluster(cluster) {
         // Use inference engine to determine widget type
         const inference = StructureInferenceEngine.inferWidgetType(cluster);
+        // console.log("Cluster [processCluster]: ", cluster);
         const bounds = SpatialClusteringHelper.calculateClusterBounds(cluster);
 
         // Build the classified layer
@@ -213,6 +214,7 @@ export class RawPSDAdapter {
      */
     static createRowContainer(clusters) {
         const allLayers = clusters.flat();
+        console.log("All Layers [createRowContainer]: ", allLayers);
         const bounds = SpatialClusteringHelper.calculateClusterBounds(allLayers);
 
         // Check for repeating pattern (cards)
